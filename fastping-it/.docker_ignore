@@ -11,9 +11,11 @@ venv/
 .git/
 .gitignore
 README.md
-Dockerfile
-docker-compose.yml
 *.log
 .DS_Store
 node_modules/
 npm-debug.log*
+hey.exe
+*.db
+data/
+logs/
