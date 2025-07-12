@@ -1,0 +1,2 @@
+# Run on the 1st of each month at 2 AM
+0 2 1 * * curl -X POST https://yourservice.com/api/billing/process-overages

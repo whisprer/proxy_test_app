@@ -1,0 +1,10 @@
+{
+  "webhook_events": [
+    "BILLING.SUBSCRIPTION.ACTIVATED",
+    "BILLING.SUBSCRIPTION.CANCELLED", 
+    "PAYMENT.SALE.COMPLETED",
+    "BILLING.SUBSCRIPTION.PAYMENT.FAILED",
+    "INVOICING.INVOICE.PAID"
+  ],
+  "url": "https://yourservice.com/webhook/paypal"
+}

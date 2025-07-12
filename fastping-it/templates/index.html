@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastPing.It - Lightning Fast Proxy Network</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d2d5f 100%);
+            color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating particles - same as other pages */
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(64, 224, 255, 0.6);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2n) {
+            background: rgba(255, 107, 107, 0.6);
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(78, 205, 196, 0.6);
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-100px) rotate(180deg); }
+        }
+
+        /* Top navigation bar */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #40e0ff, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #40e0ff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #40e0ff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Burger menu for mobile */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+
+        .burger-line {
+            width: 25px;
+            height: 3px;
+            background: #40e0ff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-menu.active .burger-line:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .burger-menu.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.active .burger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            z-index: 999;
+            padding: 2rem;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .mobile-menu a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: #40e0ff;
+        }
+
+        /* Main content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            padding-top: 100px;
+        }
+
+        /* Hero section */
+        .hero-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(64, 224, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #40e0ff, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(64, 224, 255, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #b3b3ff;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            color: #ccc;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        /* Features grid */
+        .features-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 300% 100%;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(64, 224, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(64, 224, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #40e0ff;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* QR Code and PayPal section */
+        .pricing-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            margin: 4rem 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .qr-code-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .qr-info {
+            flex: 1;
+            min-width: 300px;
+            text-align: left;
+        }
+
+        .qr-title {
+            font-size: 1.5rem;
+            color: #40e0ff;
+            margin-bottom: 1rem;
+        }
+
+        .qr-description {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* PayPal button styling to match */
+        .paypal-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(0, 48, 135, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 123, 255, 0.3);
+        }
+
+        .paypal-title {
+            font-size: 1.8rem;
+            color: #40e0ff;
+            margin-bottom: 1rem;
+        }
+
+        .paypal-description {
+            color: #b3b3ff;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* CTA buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #40e0ff, #4facfe);
+            color: #000;
+            box-shadow: 0 10px 30px rgba(64, 224, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(64, 224, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #40e0ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .burger-menu {
+                display: flex;
+            }
+
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+
+            .features-section {
+                padding: 2rem 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .pricing-section {
+                margin: 2rem 1rem;
+                padding: 2rem 1rem;
+            }
+
+            .qr-code-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .qr-info {
+                text-align: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+    
+    <!-- Your original PayPal script - keeping it exactly as is -->
+    <script 
+        src="https://www.paypal.com/sdk/js?client-id=BAACPslJ6Um5KoHhNldVWsBS_qfcelI7l6rRAl5ALLpLJm_yMMHYwyZsV6vMjwWVgH6xzk_p_rNOaiAU88&components=hosted-buttons&disable-funding=venmo&currency=USD">
+    </script>
+</head>
+<body>
+    <!-- Floating particles effect -->
+    <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: -1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: -2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: -3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: -4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: -5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: -6s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: -7s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: -8s;"></div>
+    </div>
+
+    <!-- Top navigation -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="/" class="logo">FastPing.It</a>
+            
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/stats.html">Stats</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+                <li><a href="/privacy.html">Privacy</a></li>
+            </ul>
+            
+            <div class="burger-menu" id="burgerMenu">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/stats.html">Stats</a></li>
+            <li><a href="/about.html">About</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/privacy.html">Privacy</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <!-- Hero section -->
+        <section class="hero-section">
+            <h1 class="hero-title">FastPing.It</h1>
+            <p class="hero-subtitle">An internet wall to bounce stuff off</p>
+            <p class="hero-description">
+                The home of high speed responses. An EndPoint That might as well be sitting on your shoulder.
+                How fast can we possibly manage to return around your ping and respond?
+                Can we possibly glean useful data and then return the original data untouched <em>that</em> fast?
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="/stats.html" class="btn btn-primary">You won't believe the timings!</a>
+                <a href="/about.html" class="btn btn-secondary">Learn More</a>
+            </div>
+        </section>
+
+        <!-- Features section -->
+        <section class="features-section">
+            <h2 class="section-title">Why FastPing.It?</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">
+                        Sub-40ms response times globally. Our distributed infrastructure ensures your requests are processed at the speed of light.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🌍</span>
+                    <h3 class="feature-title">Global Network</h3>
+                    <p class="feature-description">
+                        127 countries, 794+ servers worldwide. No matter where you are, we're closer than you think.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3 class="feature-title">Enterprise Security</h3>
+                    <p class="feature-description">
+                        Bank-grade encryption, IP whitelisting, and zero-log proxy infrastructure. Your data stays yours.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3 class="feature-title">Real-time Analytics</h3>
+                    <p class="feature-description">
+                        Live performance metrics, usage tracking, and detailed analytics. Know exactly what's happening.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🚀</span>
+                    <h3 class="feature-title">99.97% Uptime</h3>
+                    <p class="feature-description">
+                        Redundant infrastructure across multiple cloud providers. When others go down, we stay up.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">💰</span>
+                    <h3 class="feature-title">Transparent Pricing</h3>
+                    <p class="feature-description">
+                        No hidden fees, no surprise bills. Pay only for what you use with clear overage pricing.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing/PayPal section -->
+        <section class="pricing-section">
+            <h2 class="section-title">Get Started Today</h2>
+            
+            <div class="qr-code-container">
+                <div class="qr-code">
+                    <!-- You can add your QR code image here -->
+                    <div style="width: 150px; height: 150px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #333; font-weight: bold; border-radius: 10px;">
+                        QR CODE
+                        <br>
+                        <small>FastPing.It</small>
+                    </div>
+                </div>
+                
+                <div class="qr-info">
+                    <h3 class="qr-title">Quick Access</h3>
+                    <p class="qr-description">
+                        Scan the QR code for instant access to our mobile-optimized dashboard, 
+                        or use the PayPal button below to get started with our premium service.
+                    </p>
+                    <p class="qr-description">
+                        Join thousands of developers and businesses who trust FastPing.It 
+                        for their high-performance proxy needs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="paypal-section">
+                <h3 class="paypal-title">Start Your Premium Service</h3>
+                <p class="paypal-description">
+                    Ready to experience enterprise-grade proxy performance? 
+                    Choose your plan and get instant access to our global network.
+                </p>
+                
+                <!-- Your original PayPal button - keeping exactly as is -->
+                <div id="paypal-container-VYCNCXNGFEVQG"></div>
+                <script>
+                    paypal.HostedButtons({
+                        hostedButtonId: "VYCNCXNGFEVQG",
+                    }).render("#paypal-container-VYCNCXNGFEVQG")
+                </script>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>And this is just the words that lurk at the bottom of the page...</p>
+            <p><strong>fastping.it.whispr.dev</strong></p>
+            
+            <div class="footer-links">
+                <a href="/stats.html">Network Stats</a>
+                <a href="/about.html">About Us</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="https://github.com/fastping" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Burger menu functionality
+        const burgerMenu = document.getElementById('burgerMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        burgerMenu.addEventListener('click', () => {
+            burgerMenu.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                burgerMenu.classList.remove('active');
+                mobileMenu.classList.remove('active');
+            });
+        });
+
+        // Add some dynamic particle effects
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            document.querySelector('.floating-particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.top-nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(0, 0, 0, 0.5)';
+            } else {
+                nav.style.background = 'rgba(0, 0, 0, 0.3)';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | ProxyForge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d2d5f 100%);
+            color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(64, 224, 255, 0.6);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2n) {
+            background: rgba(255, 107, 107, 0.6);
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(78, 205, 196, 0.6);
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-100px) rotate(180deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #40e0ff, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(64, 224, 255, 0.3);
+        }
+
+        .last-updated {
+            color: #888;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #b3b3ff;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 300% 100%;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #40e0ff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            color: #ccc;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+
+        .section-content ul {
+            margin: 1rem 0 1rem 2rem;
+            color: #ddd;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: rgba(64, 224, 255, 0.1);
+            border: 1px solid rgba(64, 224, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-title {
+            font-weight: 600;
+            color: #40e0ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            background: rgba(64, 224, 255, 0.1);
+            color: #40e0ff;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            color: #ccc;
+        }
+
+        .contact-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .contact-title {
+            font-size: 1.5rem;
+            color: #40e0ff;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #40e0ff, #4facfe);
+            color: #000;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(64, 224, 255, 0.3);
+        }
+
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(64, 224, 255, 0.5);
+        }
+
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #40e0ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .back-home:hover {
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        .toc {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc-title {
+            font-size: 1.2rem;
+            color: #40e0ff;
+            margin-bottom: 1rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-list a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .toc-list a:hover {
+            color: #40e0ff;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+            
+            .back-home {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 2rem;
+                justify-content: center;
+            }
+            
+            .data-table {
+                font-size: 0.9rem;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: -1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: -2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: -3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: -4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: -5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: -6s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: -7s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: -8s;"></div>
+    </div>
+
+    <a href="/" class="back-home">
+        ← Back to Home
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">Privacy Policy</h1>
+            <div class="last-updated">Last updated: January 15, 2025</div>
+            <p class="page-subtitle">
+                Your privacy is paramount. This policy explains how ProxyForge collects, uses, and protects your data.
+            </p>
+        </div>
+
+        <div class="toc">
+            <div class="toc-title">📋 Table of Contents</div>
+            <ul class="toc-list">
+                <li><a href="#overview">1. Overview</a></li>
+                <li><a href="#data-collection">2. Data We Collect</a></li>
+                <li><a href="#data-usage">3. How We Use Your Data</a></li>
+                <li><a href="#data-sharing">4. Data Sharing & Disclosure</a></li>
+                <li><a href="#data-security">5. Data Security</a></li>
+                <li><a href="#your-rights">6. Your Rights</a></li>
+                <li><a href="#retention">7. Data Retention</a></li>
+                <li><a href="#cookies">8. Cookies & Tracking</a></li>
+                <li><a href="#updates">9. Policy Updates</a></li>
+                <li><a href="#contact">10. Contact Us</a></li>
+            </ul>
+        </div>
+
+        <div class="content-card" id="overview">
+            <h2 class="section-title">🛡️ 1. Overview</h2>
+            <div class="section-content">
+                <p>
+                    FastPing.It ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our proxy services, website, and related applications.
+                </p>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">🔒 Our Privacy Commitment</div>
+                    <p>We operate on a principle of data minimization - we only collect what's necessary to provide and improve our services. Your proxy traffic is never logged, stored, or analyzed.</p>
+                </div>
+
+                <p>
+                    By using our services, you consent to the data practices described in this policy. If you do not agree with our policies and practices, please do not use our services.
+                </p>
+            </div>
+        </div>
+
+        <div class="content-card" id="data-collection">
+            <h2 class="section-title">📊 2. Data We Collect</h2>
+            <div class="section-content">
+                <p>We collect information to provide better services to our users. Here's what we collect:</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Data Type</th>
+                            <th>Purpose</th>
+                            <th>Retention</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Account Information</strong></td>
+                            <td>Service delivery, billing, support</td>
+                            <td>Account lifetime + 7 years</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usage Metrics</strong></td>
+                            <td>Service optimization, billing</td>
+                            <td>12 months</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Technical Logs</strong></td>
+                            <td>Performance monitoring, security</td>
+                            <td>30 days</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Billing Information</strong></td>
+                            <td>Payment processing</td>
+                            <td>7 years (legal requirement)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Support Communications</strong></td>
+                            <td>Customer service</td>
+                            <td>3 years</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">What We DON'T Collect</h3>
+                <ul>
+                    <li>🚫 Proxy traffic content or destination URLs</li>
+                    <li>🚫 Personal browsing history or patterns</li>
+                    <li>🚫 Unencrypted passwords or sensitive data</li>
+                    <li>🚫 Third-party tracking cookies</li>
+                    <li>🚫 Biometric or location data</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-card" id="data-usage">
+            <h2 class="section-title">⚙️ 3. How We Use Your Data</h2>
+            <div class="section-content">
+                <p>We use collected information for legitimate business purposes including:</p>
+
+                <ul>
+                    <li><strong>Service Delivery:</strong> Providing reliable proxy infrastructure and maintaining service quality</li>
+                    <li><strong>Billing & Payments:</strong> Processing payments, generating invoices, and managing subscriptions</li>
+                    <li><strong>Customer Support:</strong> Responding to inquiries, troubleshooting issues, and providing technical assistance</li>
+                    <li><strong>Security & Fraud Prevention:</strong> Detecting and preventing unauthorized access, abuse, and fraudulent activities</li>
+                    <li><strong>Service Improvement:</strong> Analyzing usage patterns to optimize performance and develop new features</li>
+                    <li><strong>Legal Compliance:</strong> Meeting regulatory requirements and responding to lawful requests</li>
+                    <li><strong>Communications:</strong> Sending service updates, security alerts, and administrative messages</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div class="highlight-title">🎯 Marketing Communications</div>
+                    <p>We only send promotional content to users who explicitly opt-in. You can unsubscribe at any time using the link in our emails or by contacting us directly.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" id="data-sharing">
+            <h2 class="section-title">🤝 4. Data Sharing & Disclosure</h2>
+            <div class="section-content">
+                <p>We do not sell, trade, or rent your personal information. We may share data only in these limited circumstances:</p>
+
+                <ul>
+                    <li><strong>Service Providers:</strong> Trusted third parties who assist in operations (payment processors, hosting providers, analytics)</li>
+                    <li><strong>Legal Requirements:</strong> When required by law, court order, or government investigation</li>
+                    <li><strong>Business Transfers:</strong> In case of merger, acquisition, or sale of business assets (with user notification)</li>
+                    <li><strong>Safety & Security:</strong> To protect our rights, property, safety, or that of our users</li>
+                    <li><strong>Consent:</strong> When you explicitly authorize sharing for specific purposes</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div class="highlight-title">🌍 International Transfers</div>
+                    <p>Our global infrastructure may process data in different countries. We ensure appropriate safeguards are in place, including Standard Contractual Clauses for EU data transfers.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" id="data-security">
+            <h2 class="section-title">🔐 5. Data Security</h2>
+            <div class="section-content">
+                <p>We implement industry-leading security measures to protect your data:</p>
+
+                <ul>
+                    <li><strong>Encryption:</strong> All data is encrypted in transit (TLS 1.3) and at rest (AES-256)</li>
+                    <li><strong>Access Controls:</strong> Strict role-based access with multi-factor authentication</li>
+                    <li><strong>Infrastructure Security:</strong> SOC 2 Type II compliant hosting with 24/7 monitoring</li>
+                    <li><strong>Regular Audits:</strong> Third-party security assessments and penetration testing</li>
+                    <li><strong>Incident Response:</strong> Comprehensive breach response procedures with user notification</li>
+                    <li><strong>Data Minimization:</strong> Automated deletion of unnecessary data and logs</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div class="highlight-title">🛡️ Zero-Knowledge Architecture</div>
+                    <p>Our proxy infrastructure is designed so that we cannot see or log your traffic content, even if we wanted to. Your data flows through our servers without persistent storage.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" id="your-rights">
+            <h2 class="section-title">⚖️ 6. Your Rights</h2>
+            <div class="section-content">
+                <p>You have the following rights regarding your personal data:</p>
+
+                <ul>
+                    <li><strong>Access:</strong> Request a copy of your personal data we hold</li>
+                    <li><strong>Rectification:</strong> Correct any inaccurate or incomplete information</li>
+                    <li><strong>Erasure:</strong> Request deletion of your personal data (subject to legal requirements)</li>
+                    <li><strong>Portability:</strong> Receive your data in a machine-readable format</li>
+                    <li><strong>Restriction:</strong> Limit how we process your data in certain circumstances</li>
+                    <li><strong>Objection:</strong> Object to processing based on legitimate interests</li>
+                    <li><strong>Consent Withdrawal:</strong> Withdraw consent for specific processing activities</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div class="highlight-title">📧 Exercise Your Rights</div>
+                    <p>To exercise any of these rights, contact us at <strong>privacy@proxyforge.com</strong>. We'll respond within 30 days and verify your identity before processing requests.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card" id="retention">
+            <h2 class="section-title">⏰ 7. Data Retention</h2>
+            <div class="section-content">
+                <p>We retain data only as long as necessary for legitimate business purposes:</p>
+
+                <ul>
+                    <li><strong>Account Data:</strong> Retained while your account is active plus 7 years for legal compliance</li>
+                    <li><strong>Usage Logs:</strong> Automatically deleted after 12 months</li>
+                    <li><strong>Technical Logs:</strong> Automatically deleted after 30 days</li>
+                    <li><strong>Billing Records:</strong> Retained for 7 years as required by tax laws</li>
+                    <li><strong>Support Communications:</strong> Retained for 3 years for service improvement</li>
+                </ul>
+
+                <p>Upon account deletion, we securely erase all personal data except what we're legally required to retain.</p>
+            </div>
+        </div>
+
+        <div class="content-card" id="cookies">
+            <h2 class="section-title">🍪 8. Cookies & Tracking</h2>
+            <div class="section-content">
+                <p>We use minimal cookies for essential functionality:</p>
+
+                <ul>
+                    <li><strong>Essential Cookies:</strong> Required for authentication, security, and basic functionality</li>
+                    <li><strong>Analytics Cookies:</strong> Anonymous usage statistics to improve our services (opt-in only)</li>
+                    <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
+                </ul>
+
+                <p>We do not use advertising cookies or share data with ad networks. You can control cookie preferences through your browser settings.</p>
+            </div>
+        </div>
+
+        <div class="content-card" id="updates">
+            <h2 class="section-title">🔄 9. Policy Updates</h2>
+            <div class="section-content">
+                <p>
+                    We may update this Privacy Policy to reflect changes in our practices or legal requirements. Material changes will be communicated via:
+                </p>
+
+                <ul>
+                    <li>Email notification to registered users</li>
+                    <li>Prominent notice on our website</li>
+                    <li>In-app notifications for significant changes</li>
+                </ul>
+
+                <p>Continued use of our services after updates constitutes acceptance of the revised policy.</p>
+            </div>
+        </div>
+
+        <div class="contact-section" id="contact">
+            <h2 class="contact-title">📞 Contact Our Privacy Team</h2>
+            <div class="contact-info">
+                Have questions about this policy or your data rights?<br>
+                Our privacy team is here to help.
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <strong>Email:</strong> privacy@proxyforge.com<br>
+                <strong>Phone:</strong> +1 (555) PRIVACY<br>
+                <strong>Mail:</strong> ProxyForge Privacy Team, 123 Security St, San Francisco, CA 94102
+            </div>
+            <a href="/contact" class="contact-button">Contact Us</a>
+        </div>
+    </div>
+
+    <script>
+        // Add some dynamic particle effects
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            document.querySelector('.floating-particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+
+        // Smooth scrolling for table of contents links
+        document.querySelectorAll('.toc-list a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in table of contents
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.content-card[id]');
+            const tocLinks = document.querySelectorAll('.toc-list a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100) {
+                    currentSection = section.id;
+                }
+            });
+            
+            tocLinks.forEach(link => {
+                link.style.color = '#ccc';
+                if (link.getAttribute('href') === '#' + currentSection) {
+                    link.style.color = '#40e0ff';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
