@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation | FastPing.It</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d2d5f 100%);
+            color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #40e0ff, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #40e0ff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 2rem 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #40e0ff, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 30px rgba(64, 224, 255, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.3rem;
+            color: #b3b3ff;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .api-overview {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .api-overview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+            background-size: 300% 100%;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #40e0ff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content {
+            color: #ccc;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .content p {
+            margin-bottom: 1rem;
+        }
+
+        .content ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: rgba(64, 224, 255, 0.1);
+            border: 1px solid rgba(64, 224, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-title {
+            font-weight: 600;
+            color: #40e0ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .endpoint-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .endpoint-card:hover {
+            border-color: rgba(64, 224, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(64, 224, 255, 0.2);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .method-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .method-get {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .method-post {
+            background: rgba(64, 224, 255, 0.2);
+            color: #40e0ff;
+            border: 1px solid #40e0ff;
+        }
+
+        .method-put {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+            border: 1px solid #ffa500;
+        }
+
+        .method-delete {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border: 1px solid #ff6b6b;
+        }
+
+        .endpoint-path {
+            font-family: 'Fira Code', 'Monaco', monospace;
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .plan-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .plan-basic {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+        }
+
+        .plan-premium {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+        }
+
+        .plan-enterprise {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Fira Code', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(64, 224, 255, 0.2);
+            border: 1px solid #40e0ff;
+            color: #40e0ff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: rgba(64, 224, 255, 0.3);
+        }
+
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .params-table th,
+        .params-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .params-table th {
+            background: rgba(64, 224, 255, 0.1);
+            color: #40e0ff;
+            font-weight: 600;
+        }
+
+        .params-table td {
+            color: #ccc;
+        }
+
+        .response-example {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .auth-section {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(64, 224, 255, 0.6);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2n) {
+            background: rgba(255, 107, 107, 0.6);
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(78, 205, 196, 0.6);
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-100px) rotate(180deg); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .container {
+                padding: 100px 1rem 2rem;
+            }
+            
+            .endpoint-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .endpoint-path {
+                font-size: 1rem;
+                word-break: break-all;
+            }
+            
+            .params-table {
+                font-size: 0.9rem;
+            }
+            
+            .params-table th,
+            .params-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: -1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: -2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: -3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: -4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: -5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: -6s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: -7s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: -8s;"></div>
+    </div>
+
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="/" class="logo">FastPing.It</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/stats.html">Stats</a></li>
+                <li><a href="/docs" class="active">API Docs</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">API Documentation</h1>
+            <p class="page-subtitle">
+                Programmatic access to the world's fastest proxy network. 
+                Sub-40ms response times, 99.97% uptime, enterprise-grade security.
+            </p>
+        </div>
+
+        <div class="api-overview">
+            <h2 class="section-title">🚀 Getting Started</h2>
+            <div class="content">
+                <p>
+                    The FastPing.It API provides lightning-fast proxy testing, request forwarding, 
+                    and network analysis capabilities. All endpoints return JSON responses and support 
+                    both REST and real-time access patterns.
+                </p>
+                
+                <div class="highlight-box">
+                    <div class="highlight-title">🔑 Authentication Required</div>
+                    <p>All API endpoints require authentication using your API key. Get your key from your customer dashboard or contact support.</p>
+                </div>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Base URL</h3>
+                <div class="code-block">
+                    <pre>https://fastping.it/api/v1</pre>
+                    <button class="copy-button" onclick="copyToClipboard('https://fastping.it/api/v1')">Copy</button>
+                </div>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Rate Limits by Plan</h3>
+                <ul>
+                    <li><strong>Basic Plan:</strong> 100 requests/minute, 10,000/day</li>
+                    <li><strong>Premium Plan:</strong> 500 requests/minute, 50,000/day</li>
+                    <li><strong>Enterprise Plan:</strong> 2,000 requests/minute, 200,000/day</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="auth-section">
+            <h2 class="section-title">🔐 Authentication</h2>
+            <div class="content">
+                <p>Include your API key in the Authorization header as a Bearer token:</p>
+                
+                <div class="code-block">
+                    <pre>Authorization: Bearer fpk_your_api_key_here</pre>
+                    <button class="copy-button" onclick="copyToClipboard('Authorization: Bearer fpk_your_api_key_here')">Copy</button>
+                </div>
+
+                <p>Or include it as a query parameter:</p>
+                
+                <div class="code-block">
+                    <pre>GET /api/v1/ping?api_key=fpk_your_api_key_here</pre>
+                    <button class="copy-button" onclick="copyToClipboard('GET /api/v1/ping?api_key=fpk_your_api_key_here')">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ping Endpoint -->
+        <div class="endpoint-card">
+            <div class="endpoint-header">
+                <span class="method-badge method-get">GET</span>
+                <span class="endpoint-path">/api/v1/ping</span>
+                <span class="plan-badge plan-basic">Basic+</span>
+            </div>
+            
+            <div class="content">
+                <p><strong>Ultra-fast connectivity test</strong> - The fastest possible response to verify your connection and measure latency.</p>
+                
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Example Request</h4>
+                <div class="code-block">
+                    <pre>curl -H "Authorization: Bearer fpk_your_api_key" \
+     https://fastping.it/api/v1/ping</pre>
+                    <button class="copy-button" onclick="copyToClipboard('curl -H \"Authorization: Bearer fpk_your_api_key\" https://fastping.it/api/v1/ping')">Copy</button>
+                </div>
+
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Response</h4>
+                <div class="response-example">
+                    <pre>{
+  "status": "success",
+  "message": "pong",
+  "timestamp": 1704067200.123,
+  "response_time_ms": 12.5,
+  "server": "FastPing.It"
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Endpoint -->
+        <div class="endpoint-card">
+            <div class="endpoint-header">
+                <span class="method-badge method-get">GET</span>
+                <span class="method-badge method-post">POST</span>
+                <span class="endpoint-path">/api/v1/test</span>
+                <span class="plan-badge plan-basic">Basic+</span>
+            </div>
+            
+            <div class="content">
+                <p><strong>Full proxy analysis</strong> - Complete request/response analysis with headers, timing, and client information.</p>
+                
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Example Request</h4>
+                <div class="code-block">
+                    <pre>curl -X POST \
+     -H "Authorization: Bearer fpk_your_api_key" \
+     -H "Content-Type: application/json" \
+     -d '{"test_data": "hello world"}' \
+     https://fastping.it/api/v1/test</pre>
+                    <button class="copy-button" onclick="copyToClipboard('curl -X POST -H \"Authorization: Bearer fpk_your_api_key\" -H \"Content-Type: application/json\" -d \'{\"test_data\": \"hello world\"}\' https://fastping.it/api/v1/test')">Copy</button>
+                </div>
+
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Response</h4>
+                <div class="response-example">
+                    <pre>{
+  "status": "success",
+  "test_type": "full_analysis",
+  "request_info": {
+    "method": "POST",
+    "headers": {...},
+    "client_ip": "203.0.113.1",
+    "user_agent": "curl/7.68.0",
+    "content_type": "application/json"
+  },
+  "data_received": {
+    "test_data": "hello world"
+  },
+  "server_info": {
+    "processing_time_ms": 15.2,
+    "timestamp": "2024-01-01T12:00:00Z"
+  },
+  "customer_info": {
+    "plan": "basic",
+    "remaining_requests_minute": 99,
+    "remaining_requests_day": 9999
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proxy Endpoint -->
+        <div class="endpoint-card">
+            <div class="endpoint-header">
+                <span class="method-badge method-get">GET</span>
+                <span class="method-badge method-post">POST</span>
+                <span class="method-badge method-put">PUT</span>
+                <span class="method-badge method-delete">DELETE</span>
+                <span class="endpoint-path">/api/v1/proxy</span>
+                <span class="plan-badge plan-premium">Premium+</span>
+            </div>
+            
+            <div class="content">
+                <p><strong>Full proxy forwarding</strong> - Forward requests to any URL through our global proxy network with complete response capture.</p>
+                
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Parameters</h4>
+                <table class="params-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>url</code></td>
+                            <td>string</td>
+                            <td>Yes</td>
+                            <td>Target URL to proxy the request to</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Example Request</h4>
+                <div class="code-block">
+                    <pre>curl -H "Authorization: Bearer fpk_your_api_key" \
+     "https://fastping.it/api/v1/proxy?url=https://httpbin.org/get"</pre>
+                    <button class="copy-button" onclick="copyToClipboard('curl -H \"Authorization: Bearer fpk_your_api_key\" \"https://fastping.it/api/v1/proxy?url=https://httpbin.org/get\"')">Copy</button>
+                </div>
+
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Response</h4>
+                <div class="response-example">
+                    <pre>{
+  "status": "success",
+  "proxy_response": {
+    "status_code": 200,
+    "headers": {
+      "content-type": "application/json",
+      "content-length": "312"
+    },
+    "content": "{\"args\": {}, \"headers\": {...}}",
+    "content_length": 312
+  },
+  "request_info": {
+    "target_url": "https://httpbin.org/get",
+    "method": "GET",
+    "processing_time_ms": 145.7
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Endpoint -->
+        <div class="endpoint-card">
+            <div class="endpoint-header">
+                <span class="method-badge method-get">GET</span>
+                <span class="endpoint-path">/api/v1/stats</span>
+                <span class="plan-badge plan-basic">Basic+</span>
+            </div>
+            
+            <div class="content">
+                <p><strong>Usage statistics</strong> - Get detailed usage analytics for your account including request counts, response times, and rate limit status.</p>
+                
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Example Request</h4>
+                <div class="code-block">
+                    <pre>curl -H "Authorization: Bearer fpk_your_api_key" \
+     https://fastping.it/api/v1/stats</pre>
+                    <button class="copy-button" onclick="copyToClipboard('curl -H \"Authorization: Bearer fpk_your_api_key\" https://fastping.it/api/v1/stats')">Copy</button>
+                </div>
+
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Response</h4>
+                <div class="response-example">
+                    <pre>{
+  "status": "success",
+  "customer_id": "cust_abc123",
+  "plan": "premium",
+  "usage_stats_30d": {
+    "total_requests": 45230,
+    "avg_response_time_ms": 38.5,
+    "active_days": 28,
+    "total_bytes_transferred": 2345678
+  },
+  "current_limits": {
+    "requests_this_minute": 15,
+    "requests_today": 1250,
+    "remaining_minute": 485,
+    "remaining_day": 48750
+  },
+  "generated_at": "2024-01-01T12:00:00Z"
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Endpoint -->
+        <div class="endpoint-card">
+            <div class="endpoint-header">
+                <span class="method-badge method-post">POST</span>
+                <span class="endpoint-path">/api/v1/batch</span>
+                <span class="plan-badge plan-enterprise">Enterprise</span>
+            </div>
+            
+            <div class="content">
+                <p><strong>Batch processing</strong> - Process multiple requests simultaneously for maximum efficiency. Limited to 10 requests per batch.</p>
+                
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Request Body</h4>
+                <div class="code-block">
+                    <pre>{
+  "requests": [
+    {
+      "url": "https://httpbin.org/get",
+      "headers": {"Custom-Header": "value"}
+    },
+    {
+      "url": "https://httpbin.org/status/200"
+    }
+  ]
+}</pre>
+                </div>
+
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Example Request</h4>
+                <div class="code-block">
+                    <pre>curl -X POST \
+     -H "Authorization: Bearer fpk_your_api_key" \
+     -H "Content-Type: application/json" \
+     -d '{"requests": [{"url": "https://httpbin.org/get"}]}' \
+     https://fastping.it/api/v1/batch</pre>
+                    <button class="copy-button" onclick="copyToClipboard('curl -X POST -H \"Authorization: Bearer fpk_your_api_key\" -H \"Content-Type: application/json\" -d \'{\"requests\": [{\"url\": \"https://httpbin.org/get\"}]}\' https://fastping.it/api/v1/batch')">Copy</button>
+                </div>
+
+                <h4 style="color: #40e0ff; margin: 1.5rem 0 1rem 0;">Response</h4>
+                <div class="response-example">
+                    <pre>{
+  "status": "success",
+  "batch_id": "batch_xyz789",
+  "total_requests": 2,
+  "successful_requests": 2,
+  "failed_requests": 0,
+  "results": [
+    {
+      "index": 0,
+      "status": "success",
+      "url": "https://httpbin.org/get",
+      "status_code": 200,
+      "response_time_ms": 142.3,
+      "content_length": 312
+    }
+  ],
+  "processing_time_ms": 156.7
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Handling -->
+        <div class="api-overview">
+            <h2 class="section-title">⚠️ Error Handling</h2>
+            <div class="content">
+                <p>The API uses standard HTTP status codes and returns detailed error information in JSON format.</p>
+                
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Common Status Codes</h3>
+                <ul>
+                    <li><strong>200 OK:</strong> Request successful</li>
+                    <li><strong>401 Unauthorized:</strong> Invalid or missing API key</li>
+                    <li><strong>403 Forbidden:</strong> Insufficient plan level for endpoint</li>
+                    <li><strong>429 Too Many Requests:</strong> Rate limit exceeded</li>
+                    <li><strong>500 Internal Server Error:</strong> Server error</li>
+                </ul>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Error Response Format</h3>
+                <div class="code-block">
+                    <pre>{
+  "error": "Rate limit exceeded",
+  "message": "You have exceeded your rate limit of 100 requests per minute",
+  "limit": 100,
+  "window": "per_minute",
+  "reset_at": "2024-01-01T12:01:00Z"
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rate Limit Headers -->
+        <div class="api-overview">
+            <h2 class="section-title">📊 Rate Limit Headers</h2>
+            <div class="content">
+                <p>All successful responses include rate limit information in the headers:</p>
+                
+                <div class="code-block">
+                    <pre>X-RateLimit-Remaining-Minute: 85
+X-RateLimit-Remaining-Day: 9547
+X-RateLimit-Reset-Minute: 2024-01-01T12:01:00Z
+X-RateLimit-Reset-Day: 2024-01-02T00:00:00Z</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- SDKs and Examples -->
+        <div class="api-overview">
+            <h2 class="section-title">💻 SDKs & Examples</h2>
+            <div class="content">
+                <p>We provide SDKs and examples in multiple programming languages to get you started quickly.</p>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">JavaScript/Node.js</h3>
+                <div class="code-block">
+                    <pre>const axios = require('axios');
+
+const client = axios.create({
+  baseURL: 'https://fastping.it/api/v1',
+  headers: {
+    'Authorization': 'Bearer fpk_your_api_key'
+  }
+});
+
+// Quick ping test
+async function ping() {
+  try {
+    const response = await client.get('/ping');
+    console.log('Response time:', response.data.response_time_ms + 'ms');
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response.data);
+  }
+}
+
+// Full test with data
+async function test(data) {
+  try {
+    const response = await client.post('/test', data);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response.data);
+  }
+}
+
+// Proxy a request
+async function proxy(targetUrl) {
+  try {
+    const response = await client.get('/proxy', {
+      params: { url: targetUrl }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response.data);
+  }
+}</pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling.textContent)">Copy</button>
+                </div>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Python</h3>
+                <div class="code-block">
+                    <pre>import requests
+import json
+
+class FastPingClient:
+    def __init__(self, api_key):
+        self.base_url = 'https://fastping.it/api/v1'
+        self.headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json'
+        }
+    
+    def ping(self):
+        """Quick connectivity test"""
+        response = requests.get(f'{self.base_url}/ping', headers=self.headers)
+        response.raise_for_status()
+        return response.json()
+    
+    def test(self, data=None):
+        """Full proxy test"""
+        response = requests.post(
+            f'{self.base_url}/test', 
+            headers=self.headers,
+            json=data
+        )
+        response.raise_for_status()
+        return response.json()
+    
+    def proxy(self, target_url, method='GET', data=None):
+        """Proxy request to target URL"""
+        params = {'url': target_url}
+        
+        if method.upper() == 'GET':
+            response = requests.get(f'{self.base_url}/proxy', 
+                                  headers=self.headers, params=params)
+        else:
+            response = requests.post(f'{self.base_url}/proxy',
+                                   headers=self.headers, params=params, json=data)
+        
+        response.raise_for_status()
+        return response.json()
+    
+    def get_stats(self):
+        """Get usage statistics"""
+        response = requests.get(f'{self.base_url}/stats', headers=self.headers)
+        response.raise_for_status()
+        return response.json()
+
+# Usage example
+client = FastPingClient('fpk_your_api_key')
+
+# Quick ping
+result = client.ping()
+print(f"Response time: {result['response_time_ms']}ms")
+
+# Get stats
+stats = client.get_stats()
+print(f"Requests today: {stats['current_limits']['requests_today']}")</pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling.textContent)">Copy</button>
+                </div>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">PHP</h3>
+                <div class="code-block">
+                    <pre><?php
+class FastPingClient {
+    private $baseUrl = 'https://fastping.it/api/v1';
+    private $apiKey;
+    
+    public function __construct($apiKey) {
+        $this->apiKey = $apiKey;
+    }
+    
+    private function makeRequest($endpoint, $method = 'GET', $data = null) {
+        $url = $this->baseUrl . $endpoint;
+        
+        $headers = [
+            'Authorization: Bearer ' . $this->apiKey,
+            'Content-Type: application/json'
+        ];
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        
+        if ($method === 'POST' && $data) {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        }
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        if ($httpCode !== 200) {
+            throw new Exception("HTTP Error: $httpCode");
+        }
+        
+        return json_decode($response, true);
+    }
+    
+    public function ping() {
+        return $this->makeRequest('/ping');
+    }
+    
+    public function test($data = null) {
+        return $this->makeRequest('/test', 'POST', $data);
+    }
+    
+    public function proxy($targetUrl) {
+        return $this->makeRequest('/proxy?url=' . urlencode($targetUrl));
+    }
+    
+    public function getStats() {
+        return $this->makeRequest('/stats');
+    }
+}
+
+// Usage
+$client = new FastPingClient('fpk_your_api_key');
+
+try {
+    $result = $client->ping();
+    echo "Response time: " . $result['response_time_ms'] . "ms\n";
+    
+    $stats = $client->getStats();
+    echo "Requests today: " . $stats['current_limits']['requests_today'] . "\n";
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
+}
+?></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling.textContent)">Copy</button>
+                </div>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">cURL Examples</h3>
+                <div class="code-block">
+                    <pre># Quick ping test
+curl -H "Authorization: Bearer fpk_your_api_key" \
+     https://fastping.it/api/v1/ping
+
+# POST test with JSON data
+curl -X POST \
+     -H "Authorization: Bearer fpk_your_api_key" \
+     -H "Content-Type: application/json" \
+     -d '{"test": "data"}' \
+     https://fastping.it/api/v1/test
+
+# Proxy a GET request
+curl -H "Authorization: Bearer fpk_your_api_key" \
+     "https://fastping.it/api/v1/proxy?url=https://httpbin.org/get"
+
+# Get usage statistics
+curl -H "Authorization: Bearer fpk_your_api_key" \
+     https://fastping.it/api/v1/stats
+
+# Batch processing
+curl -X POST \
+     -H "Authorization: Bearer fpk_your_api_key" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "requests": [
+         {"url": "https://httpbin.org/get"},
+         {"url": "https://httpbin.org/status/200"}
+       ]
+     }' \
+     https://fastping.it/api/v1/batch</pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.previousElementSibling.textContent)">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Webhooks -->
+        <div class="api-overview">
+            <h2 class="section-title">🔔 Webhooks</h2>
+            <div class="content">
+                <p>Get real-time notifications about your account activity, rate limit warnings, and system status updates.</p>
+                
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Available Events</h3>
+                <ul>
+                    <li><strong>rate_limit_warning:</strong> Triggered at 80% of your rate limit</li>
+                    <li><strong>rate_limit_exceeded:</strong> Triggered when rate limit is exceeded</li>
+                    <li><strong>quota_warning:</strong> Triggered at 90% of monthly quota</li>
+                    <li><strong>quota_exceeded:</strong> Triggered when monthly quota is exceeded</li>
+                    <li><strong>service_degradation:</strong> Triggered during performance issues</li>
+                </ul>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Webhook Payload Example</h3>
+                <div class="code-block">
+                    <pre>{
+  "event": "rate_limit_warning",
+  "timestamp": "2024-01-01T12:00:00Z",
+  "customer_id": "cust_abc123",
+  "data": {
+    "current_usage": 80,
+    "limit": 100,
+    "window": "per_minute",
+    "reset_at": "2024-01-01T12:01:00Z"
+  }
+}</pre>
+                </div>
+
+                <div class="highlight-box">
+                    <div class="highlight-title">🔧 Configure Webhooks</div>
+                    <p>Contact support to configure webhook endpoints for your account. We'll send a verification challenge to confirm your endpoint.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support -->
+        <div class="api-overview">
+            <h2 class="section-title">💬 Support & Resources</h2>
+            <div class="content">
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Need Help?</h3>
+                <ul>
+                    <li><strong>Email Support:</strong> <a href="mailto:api-support@fastping.it" style="color: #40e0ff;">api-support@fastping.it</a></li>
+                    <li><strong>Status Page:</strong> <a href="https://status.fastping.it" style="color: #40e0ff;">status.fastping.it</a></li>
+                    <li><strong>GitHub Examples:</strong> <a href="https://github.com/fastping/examples" style="color: #40e0ff;">github.com/fastping/examples</a></li>
+                    <li><strong>Community Discord:</strong> <a href="https://discord.gg/fastping" style="color: #40e0ff;">discord.gg/fastping</a></li>
+                </ul>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">API Versioning</h3>
+                <p>
+                    We use semantic versioning for our API. The current version is <strong>v1</strong>. 
+                    We maintain backward compatibility and provide at least 6 months notice before 
+                    deprecating any endpoints.
+                </p>
+
+                <h3 style="color: #40e0ff; margin: 2rem 0 1rem 0;">Service Level Agreement</h3>
+                <ul>
+                    <li><strong>Uptime:</strong> 99.97% guaranteed uptime</li>
+                    <li><strong>Response Time:</strong> Sub-40ms global average</li>
+                    <li><strong>Support Response:</strong> &lt;24h for all plans, &lt;4h for Enterprise</li>
+                    <li><strong>Rate Limiting:</strong> Fair usage policy with generous limits</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <div class="highlight-title">🚀 Ready to Get Started?</div>
+                    <p>
+                        Sign up for a free account to get your API key and start building with the 
+                        world's fastest proxy network. Basic plans start at just $29.99/month.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <a href="/pricing" style="color: #40e0ff; font-weight: 600;">View Pricing →</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 4rem; padding: 2rem; color: #666;">
+            <p>FastPing.It API Documentation • Last updated: January 2024</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="/" style="color: #40e0ff;">Home</a> • 
+                <a href="/stats.html" style="color: #40e0ff;">Stats</a> • 
+                <a href="/about.html" style="color: #40e0ff;">About</a> • 
+                <a href="/contact.html" style="color: #40e0ff;">Contact</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Copy to clipboard functionality
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Show success feedback
+                event.target.textContent = 'Copied!';
+                event.target.style.background = 'rgba(0, 255, 136, 0.3)';
+                
+                setTimeout(() => {
+                    event.target.textContent = 'Copy';
+                    event.target.style.background = 'rgba(64, 224, 255, 0.2)';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy: ', err);
+                event.target.textContent = 'Failed';
+                setTimeout(() => {
+                    event.target.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+
+        // Add particle effects
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            document.querySelector('.floating-particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current section in navigation (if you add a TOC)
+        window.addEventListener('scroll', function() {
+            // Add scroll effects if needed
+        });
+
+        console.log('📚 FastPing.It API Documentation loaded');
+        console.log('🔗 Ready to integrate? Get your API key at https://fastping.it/dashboard');
+    </script>
+</body>
+</html>

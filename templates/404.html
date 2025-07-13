@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | FastPing.It</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d2d5f 100%);
+            color: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(64, 224, 255, 0.6);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2n) {
+            background: rgba(255, 107, 107, 0.6);
+            animation-delay: -2s;
+        }
+
+        .particle:nth-child(3n) {
+            background: rgba(78, 205, 196, 0.6);
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-100px) rotate(180deg); }
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .error-code {
+            font-size: clamp(8rem, 15vw, 20rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #40e0ff, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(64, 224, 255, 0.3);
+            margin-bottom: 1rem;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-2px) skew(-1deg); }
+            40% { transform: translateX(2px) skew(1deg); }
+            60% { transform: translateX(-1px) skew(0.5deg); }
+            80% { transform: translateX(1px) skew(-0.5deg); }
+        }
+
+        .error-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .error-subtitle {
+            font-size: 1.3rem;
+            color: #b3b3ff;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .error-description {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #40e0ff, #4facfe);
+            color: #000;
+            box-shadow: 0 10px 30px rgba(64, 224, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(64, 224, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .helpful-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .link-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(64, 224, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(64, 224, 255, 0.2);
+        }
+
+        .link-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #40e0ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-description {
+            font-size: 0.9rem;
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #40e0ff;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
+            color: #fff;
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                padding: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .helpful-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-home {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 2rem;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: -1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: -2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: -3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: -4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: -5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: -6s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: -7s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: -8s;"></div>
+    </div>
+
+    <a href="/" class="back-home">
+        ← Back to Home
+    </a>
+<script 
+  src="https://www.paypal.com/sdk/js?client-id=BAACPslJ6Um5KoHhNldVWsBS_qfcelI7l6rRAl5ALLpLJm_yMMHYwyZsV6vMjwWVgH6xzk_p_rNOaiAU88&components=hosted-buttons&disable-funding=venmo&currency=USD">
+<align-left:></script>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Proxy Route Not Found</h1>
+        <p class="error-subtitle">
+            The endpoint you're looking for seems to have vanished into the digital void.
+        </p>
+        <p class="error-description">
+            Our high-performance proxy network couldn't locate the requested resource. 
+            Don't worry though - our 99.97% uptime means everything else is running perfectly!
+        </p>
+<div id="paypal-container-N93SZANVGPGF6"></div>
+<script>
+  paypal.HostedButtons({
+    hostedButtonId: "N93SZANVGPGF6",
+  }).render("#paypal-container-N93SZANVGPGF6")
+<laign-left:></script>
+        <div class="action-buttons">
+            <a href="/" class="btn btn-primary">Return Home</a>
+            <a href="/stats" class="btn btn-secondary">View Network Stats</a>
+        </div>
+
+        <div class="helpful-links">
+            <a href="/api/docs" class="link-card">
+                <div class="link-title">📚 API Documentation</div>
+                <div class="link-description">Complete guide to our proxy endpoints and authentication</div>
+            </a>
+            <a href="/contact" class="link-card">
+                <div class="link-title">💬 Get Support</div>
+                <div class="link-description">Contact our technical team for immediate assistance</div>
+            </a>
+            <a href="/status" class="link-card">
+                <div class="link-title">🔍 Service Status</div>
+                <div class="link-description">Real-time monitoring of all proxy infrastructure</div>
+            </a>
+            <a href="/pricing" class="link-card">
+                <div class="link-title">💰 Pricing Plans</div>
+                <div class="link-description">Choose the perfect plan for your proxy needs</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add some dynamic particle effects
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            document.querySelector('.floating-particles').appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 1500);
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.link-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.background = 'rgba(64, 224, 255, 0.1)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.background = 'rgba(255, 255, 255, 0.05)';
+            });
+        });
+    </script>
+</body>
+</html>
