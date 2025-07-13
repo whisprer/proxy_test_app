@@ -80,7 +80,8 @@ class CustomerResourceManager:
                 monthly_quota INTEGER DEFAULT 10000,
                 current_usage INTEGER DEFAULT 0,
                 billing_cycle_start INTEGER DEFAULT 1,
-                notes TEXT
+                notes TEXT,
+                password_hash TEXT
             )
         ''')
         
