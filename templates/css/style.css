@@ -71,6 +71,10 @@ nav a.active {
     color: #ffffff;
 }
 
+@view-transition {
+    navigation: auto;
+}
+
 /* Main Content Area */
 main {
     flex: 1; /* Allows main content to expand and push footer down */
